@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Numerologia</title>
+<style>
+  body { font-family: sans-serif; text-align: center; margin-top: 100px; }
+  input { padding: 8px; }
+  button { padding: 8px 16px; margin-left: 8px; }
+</style>
+</head>
+<body>
+  <h2>Calculadora de Numerologia</h2>
+  <input id="nome" placeholder="Digite um nome">
+  <button onclick="calcular()">Calcular</button>
+  <p id="resultado"></p>
+
+  <script>
+    function removerAcentos(str) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function numerologia(nome) {
+      nome = removerAcentos(nome).toUpperCase().replace(/[^A-Z]/g, "");
+      let soma = 0;
+      for (let letra of nome) soma += letra.charCodeAt(0) - 64;
+
+      while (soma > 9 && ![11, 22, 33].includes(soma)) {
+        soma = soma.toString().split("").reduce((a, b) => a + +b, 0);
+      }
+      return soma;
+    }
+
+    const significados = {
+      1: "liderança, iniciativa.",
+      2: "cooperação, diplomacia.",
+      3: "criatividade, comunicação.",
+      4: "organização, estabilidade.",
+      5: "liberdade, mudança.",
+      6: "responsabilidade, família.",
+      7: "espiritualidade, introspecção.",
+      8: "poder, negócios.",
+      9: "humanitarismo, compaixão.",
+      11: "inspiração, visão espiritual.",
+      22: "realização em larga escala.",
+      33: "mestre do amor e da cura."
+    };
+
+    function calcular() {
+      const nome = document.getElementById("nome").value.trim();
+      if (!nome) return alert("Digite um nome!");
+      const numero = numerologia(nome);
+      const desc = significados[numero] || "sem descrição disponível.";
+      document.getElementById("resultado").innerText = `${numero} → ${desc}`;
+    }
+  </script>
+</body>
+</html>
